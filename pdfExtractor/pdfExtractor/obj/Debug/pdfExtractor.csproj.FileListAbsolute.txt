@@ -1,0 +1,16 @@
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\pdfExtractor.exe.config
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.csprojResolveAssemblyReference.cache
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.Form1.resources
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.Properties.Resources.resources
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.csproj.GenerateResource.Cache
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\pdfExtractor.exe
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\pdfExtractor.pdb
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\itextsharp.dll
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\itextsharp.pdfa.dll
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\itextsharp.xtra.dll
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\bin\Debug\itextsharp.xml
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.exe
+C:\Users\Ja\Source\Repos\nutris\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.pdb
+C:\Users\Ja\Source\Repos\LoopMoth\pdfExtractor\pdfExtractor\bin\Debug\pdfExtractor.exe.config
+C:\Users\Ja\Source\Repos\LoopMoth\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.exe
+C:\Users\Ja\Source\Repos\LoopMoth\pdfExtractor\pdfExtractor\obj\Debug\pdfExtractor.pdb
