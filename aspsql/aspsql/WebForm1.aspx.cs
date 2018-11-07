@@ -11,7 +11,9 @@ namespace aspsql
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            var db = new DataClasses1DataContext();
+            GridView1.DataSource = db.oddzialies.ToList();
+            GridView1.DataBind();
         }
     }
 }
