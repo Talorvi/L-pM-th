@@ -1,14 +1,12 @@
 --
--- Plik wygenerowany przez SQLiteStudio v3.2.1 dnia Å›r. lis 14 14:57:28 2018
+-- Plik wygenerowany przez SQLiteStudio v3.2.1 dnia œr. lis 21 12:49:52 2018
 --
--- UÅ¼yte kodowanie tekstu: UTF-8
+-- U¿yte kodowanie tekstu: System
 --
 PRAGMA foreign_keys = off;
 BEGIN TRANSACTION;
 
 -- Tabela: Autorzy
-DROP TABLE IF EXISTS Autorzy;
-
 CREATE TABLE Autorzy (
     id_autora INTEGER PRIMARY KEY AUTOINCREMENT
                       NOT NULL,
@@ -17,16 +15,14 @@ CREATE TABLE Autorzy (
 
 
 -- Tabela: Kategorie
-DROP TABLE IF EXISTS Kategorie;
-
 CREATE TABLE Kategorie (
-    nazwa STRING PRIMARY KEY
+    nazwa        STRING,
+    id_kategorii INTEGER PRIMARY KEY AUTOINCREMENT
+                         NOT NULL
 );
 
 
 -- Tabela: Prace
-DROP TABLE IF EXISTS Prace;
-
 CREATE TABLE Prace (
     id_pracy       INTEGER PRIMARY KEY AUTOINCREMENT
                            NOT NULL,
@@ -34,15 +30,34 @@ CREATE TABLE Prace (
     jezyk          STRING,
     rodzaj         STRING,
     rok_publikacji INT,
-    slowa_kluczowe STRING
+    slowa_kluczowe STRING,
+    id_wydawcy     INTEGER REFERENCES Wydawcy (id_wydawcy) 
+);
+
+
+-- Tabela: Prace-Autorzy
+CREATE TABLE [Prace-Autorzy] (
+    id_pracy  INTEGER REFERENCES Prace (id_pracy) 
+                      NOT NULL,
+    id_autora INTEGER REFERENCES Autorzy (id_autora) 
+                      NOT NULL
+);
+
+
+-- Tabela: Prace-Kategorie
+CREATE TABLE [Prace-Kategorie] (
+    id_pracy     INTEGER REFERENCES Prace (id_pracy) 
+                         NOT NULL,
+    id_kategorii INTEGER REFERENCES Kategorie (id_kategorii) 
+                         NOT NULL
 );
 
 
 -- Tabela: Wydawcy
-DROP TABLE IF EXISTS Wydawcy;
-
 CREATE TABLE Wydawcy (
-    nazwa STRING PRIMARY KEY
+    nazwa      STRING,
+    id_wydawcy INTEGER PRIMARY KEY AUTOINCREMENT
+                       NOT NULL
 );
 
 
