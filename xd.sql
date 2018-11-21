@@ -1,5 +1,5 @@
 --
--- Plik wygenerowany przez SQLiteStudio v3.2.1 dnia œr. lis 21 12:49:52 2018
+-- Plik wygenerowany przez SQLiteStudio v3.2.1 dnia œr. lis 21 13:05:21 2018
 --
 -- U¿yte kodowanie tekstu: System
 --
@@ -40,7 +40,11 @@ CREATE TABLE [Prace-Autorzy] (
     id_pracy  INTEGER REFERENCES Prace (id_pracy) 
                       NOT NULL,
     id_autora INTEGER REFERENCES Autorzy (id_autora) 
-                      NOT NULL
+                      NOT NULL,
+    PRIMARY KEY (
+        id_pracy,
+        id_autora
+    )
 );
 
 
@@ -49,7 +53,11 @@ CREATE TABLE [Prace-Kategorie] (
     id_pracy     INTEGER REFERENCES Prace (id_pracy) 
                          NOT NULL,
     id_kategorii INTEGER REFERENCES Kategorie (id_kategorii) 
-                         NOT NULL
+                         NOT NULL,
+    PRIMARY KEY (
+        id_pracy,
+        id_kategorii
+    )
 );
 
 
