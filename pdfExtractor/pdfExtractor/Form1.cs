@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ namespace pdfExtractor
         {
             InitializeComponent();
         }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -26,6 +28,10 @@ namespace pdfExtractor
 
         private void ShowPDFbutton_Click(object sender, EventArgs e)
         {
+
+            string Author = "", Title = "", Creator = "", Subject = "", Keywords = "", CreatedDate = "";
+            WorkPiece workpiece = new WorkPiece(Author, Title, Creator, Subject, Keywords, CreatedDate);
+
             OpenFileDialog dlg = new OpenFileDialog();
             string filePath;
             dlg.Filter = "PDF Files (*.PDF)|*.PDF|All Files (*.*)|*.*";
@@ -39,22 +45,25 @@ namespace pdfExtractor
                 try
                 {
                     PdfReader reader = new PdfReader(filePath);
-                    for(int page=1;page<= reader.NumberOfPages;page++)
-                    {
-                        ITextExtractionStrategy its = new iTextSharp.text.pdf.parser.LocationTextExtractionStrategy();
-                        String s = PdfTextExtractor.GetTextFromPage(reader, page, its);
-                        s = Encoding.UTF8.GetString(ASCIIEncoding.Convert(Encoding.Default, Encoding.UTF8, Encoding.Default.GetBytes(s)));
-                        pdftext = pdftext + s;
-                        PDFtextBox.Text = pdftext;
-                    }
+                    FileInfo myfilepath = new FileInfo(filePath);
+                    workpiece.GetInfoFromPDF(reader, myfilepath);
                     reader.Close();
+
+                    AuthortextBox.Text = workpiece.Author;
+                    TitletextBox.Text = workpiece.Title;
+                    CreatortextBox.Text = workpiece.Creator;
+                    SubjecttextBox.Text = workpiece.Subject;
+                    KeywordstextBox.Text = workpiece.Keywords;
+                    CreationDatetextBox.Text = workpiece.CreatedDate;
+
                     IDictionary<String, String> metadic = reader.Info;
                     var dic = from m in metadic
                               select m;
                     foreach (var d in dic)
                     {
-                        MetadatalistBox.Items.Add(d.Key + ": " + d.Value);
+                        MetadatalistBox.Items.Add(d.Key + ": " + d.Value);         
                     }
+                    
                 }
                 catch (Exception ex)
                 {
