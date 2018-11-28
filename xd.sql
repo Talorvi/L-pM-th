@@ -22,7 +22,8 @@ DROP TABLE IF EXISTS Kategorie;
 CREATE TABLE Kategorie (
     nazwa        STRING,
     id_kategorii INTEGER PRIMARY KEY AUTOINCREMENT
-                         NOT NULL
+                         NOT NULL,
+    dziedzina    INTEGER REFERENCES Kategorie (id_kategorii) 
 );
 
 
