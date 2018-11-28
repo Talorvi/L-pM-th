@@ -47,6 +47,7 @@
             this.TypetextBox = new System.Windows.Forms.TextBox();
             this.SubjecttextBox = new System.Windows.Forms.TextBox();
             this.KeywordstextBox = new System.Windows.Forms.TextBox();
+            this.SaveDatabutton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // ShowPDFbutton
@@ -204,11 +205,22 @@
             this.KeywordstextBox.Size = new System.Drawing.Size(100, 22);
             this.KeywordstextBox.TabIndex = 18;
             // 
+            // SaveDatabutton
+            // 
+            this.SaveDatabutton.Location = new System.Drawing.Point(714, 326);
+            this.SaveDatabutton.Name = "SaveDatabutton";
+            this.SaveDatabutton.Size = new System.Drawing.Size(118, 27);
+            this.SaveDatabutton.TabIndex = 19;
+            this.SaveDatabutton.Text = "Save data";
+            this.SaveDatabutton.UseVisualStyleBackColor = true;
+            this.SaveDatabutton.Click += new System.EventHandler(this.SaveDatabutton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(878, 364);
+            this.Controls.Add(this.SaveDatabutton);
             this.Controls.Add(this.KeywordstextBox);
             this.Controls.Add(this.SubjecttextBox);
             this.Controls.Add(this.TypetextBox);
@@ -257,6 +269,7 @@
         private System.Windows.Forms.TextBox TypetextBox;
         private System.Windows.Forms.TextBox SubjecttextBox;
         private System.Windows.Forms.TextBox KeywordstextBox;
+        private System.Windows.Forms.Button SaveDatabutton;
     }
 }
 

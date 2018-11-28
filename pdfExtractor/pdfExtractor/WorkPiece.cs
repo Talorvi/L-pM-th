@@ -1,4 +1,5 @@
 ﻿using iTextSharp.text.pdf;
+using iTextSharp.text.xml.xmp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +11,10 @@ namespace pdfExtractor
 {
     public class WorkPiece
     {
-        public WorkPiece(string Author, string Title, string Creator, string Subject, string Keywords, string CreatedDate)
+        public WorkPiece(PdfReader MyReader,string FilePath, string Author, string Title, string Creator, string Subject, string Keywords, string CreatedDate)
         {
+            this.MyReader = MyReader;
+            this.FilePath = FilePath;
             this.Author = Author;
             this.Title = Title;
             this.Creator = Creator;
@@ -20,6 +23,8 @@ namespace pdfExtractor
             this.CreatedDate = CreatedDate;
         }
 
+        public PdfReader MyReader { get; set; }
+        public string FilePath { get; set; }
         public string Author { get; set; }
         public string Title { get; set; }
         public string Creator { get; set; }
@@ -48,9 +53,31 @@ namespace pdfExtractor
                 Keywords = reader.Info["Keywords"];
             if (reader.Info.ContainsKey("CreationDate"))
                 CreatedDate = reader.Info["CreationDate"];
-            CreatedDate = CreatedDate.Substring(8, 2) + "-" + CreatedDate.Substring(6, 2) + "-" + CreatedDate.Substring(2, 4);
+            CreatedDate = CreatedDate.Substring(2, 4);
+            reader.Close();
         }
 
+        public void SetInfo(string myfilepath, string keyword, string message)
+        {
+            using (PdfReader myreader = new PdfReader(myfilepath))
+            {
+                using (var stamper = new PdfStamper(myreader, new FileStream(myfilepath, FileMode.Create)))
+                {
+                    var info = myreader.Info;
+                    info[keyword] = message;
+                    stamper.MoreInfo = info;
+                    
 
+                    using (var ms = new MemoryStream())
+                    {
+                        var xmp = new XmpWriter(ms, info);
+                        stamper.XmpMetadata = ms.ToArray();
+                        xmp.Close();
+                    }
+                }
+                myreader.Close();
+            }
+            
+        }
     }
 }
