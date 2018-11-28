@@ -30,9 +30,9 @@ CREATE TABLE Kategorie (
 DROP TABLE IF EXISTS Podkategorie;
 
 CREATE TABLE Podkategorie (
-    id_kategorii    INTEGER REFERENCES Prace (id_kategorii) 
+    id_kategorii    INTEGER REFERENCES Kategorie (id_kategorii) 
                             NOT NULL,
-    id_podkategorii INTEGER REFERENCES Autorzy (id_kategorii) 
+    id_podkategorii INTEGER REFERENCES Kategorie (id_kategorii) 
                             NOT NULL,
     PRIMARY KEY (
         id_kategorii,
