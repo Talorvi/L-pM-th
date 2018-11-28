@@ -27,21 +27,6 @@ CREATE TABLE Kategorie (
 );
 
 
--- Tabela: Podkategorie
-DROP TABLE IF EXISTS Podkategorie;
-
-CREATE TABLE Podkategorie (
-    id_kategorii    INTEGER REFERENCES Kategorie (id_kategorii) 
-                            NOT NULL,
-    id_podkategorii INTEGER REFERENCES Kategorie (id_kategorii) 
-                            NOT NULL,
-    PRIMARY KEY (
-        id_kategorii,
-        id_podkategorii
-    )
-);
-
-
 -- Tabela: Prace
 DROP TABLE IF EXISTS Prace;
 
