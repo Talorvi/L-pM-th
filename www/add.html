@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <!-- https://css-tricks.com/drag-and-drop-file-uploading/ -->
+    <!-- https://www.jqueryscript.net/form/Drag-Drop-File-Upload-Plugin-For-Bootstrap-dropzone.html -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Lööp Møth</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Muli">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/add.css">
+    <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container-fluid">
+        <img src="eeeoooo.png" style="width: auto; height: 3rem; margin-right: 1rem;"><a class="navbar-brand" href="index.html">Lööp Møth</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="add.html">Add</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container" id="content">
+        <div class="dropzone"></div>
+        <div class="element">
+          <table class="table table-striped">
+            <tr>
+              <th scope="col"><label>Author:</label></th>
+              <th scope="col"><input type="text" name="author" /></th>
+            </tr>
+            <tr>
+              <th scope="col"><label>Title:</label></th>
+              <th scope="col"><input type="text" name="title" /></th>
+            </tr>
+            <tr>
+              <th scope="col"><label>Creator:</label></th>
+              <th scope="col"><input type="text" name="creator" /></th>
+            </tr>
+            <tr>
+              <th scope="col"><label>Subject:</label></th>
+              <th scope="col"><input type="text" name="subject" /></th>
+            </tr>
+            <tr>
+              <th scope="col"><label>Keywords:</label></th>
+              <th scope="col"><input type="text" name="keywords" /></th>
+            </tr>
+          </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="js/skrypt.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="js/dropzone.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script type="text/javascript">
+      $(".dropzone").dropzone({
+        url: 'upload.php'
+      })
+
+      $(".dropzone").hover(function(){
+        $(".dropzone").css("color", "#676a6d");
+        $(".dropzone").css("background-color", "rgba(0,0,0, 0.06)");
+        $(".dropzone").css("border", "5px groove rgba(0,0,0,0.05)");
+        },function(){ 
+          $(".dropzone").css("color", "#919aa1");
+         $(".dropzone").css("background-color", "rgba(0,0,0, 0.01)");
+          $(".dropzone").css("border", "5px dashed rgba(0,0,0,0.05)");
+       } 
+      );
+      
+
+    </script>
+
+  </body>
+
+</html>
