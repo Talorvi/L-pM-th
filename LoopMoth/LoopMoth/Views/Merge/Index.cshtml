@@ -1,0 +1,87 @@
+﻿@model IEnumerable<LoopMoth.Models.MergeViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" id="content">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.tytul)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.autorzy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.jezyk)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rodzaj)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.rok_publikacji)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.slowa_kluczowe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.wydawca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.kategorie)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tytul)
+                </td>
+                <td>
+                    @foreach (var author in item.autorzy)
+                    {
+                        if (author != item.autorzy.First())
+                        {
+                            <br />
+                        }
+                        @Html.DisplayFor(das => author)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.jezyk)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rodzaj)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.rok_publikacji)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.slowa_kluczowe)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.wydawca)
+                </td>
+                <td>
+                    @foreach (var cat in item.kategorie)
+                    {
+                        if (cat != item.kategorie.First())
+                        {
+                           <br />
+                        }
+                        @Html.DisplayFor(das => cat)
+                    }
+                </td>
+                @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id_pracy }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.id_pracy }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id_pracy })
+                </td>*@
+            </tr>
+        }
+    </table>
+</div>
+

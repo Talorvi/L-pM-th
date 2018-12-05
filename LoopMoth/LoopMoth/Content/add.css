@@ -1,0 +1,66 @@
+.btn-file {
+    position: relative;
+    overflow: hidden;
+}
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+    /*margin:auto;*/
+}
+.dropzone{
+    margin: 0px auto 25px auto;
+    font-size: 1.5rem;
+    background-color: #343a40;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 20rem;
+}
+.dropzone:hover{
+    color: #fff;
+}
+.nniicc-dropzoneParent{
+    /*margin-left: auto;
+    margin-right: auto;*/
+}
+.extra-progress-wrapper{
+    margin-top: 10px;
+}
+
+.element{
+    background-color: rgba(0,0,0,0.01);
+    width: 80%;
+    margin: auto;
+    margin-top: 1rem;
+    border-radius: 15px;
+    border: 5px solid rgba(0,0,0,0.05);
+    padding: 1rem;
+}
+
+.element label{
+    font-size: 1rem;
+}
+
+.table th{
+    padding: 1rem;
+    font-size: 1rem;
+}
+
+.element input{
+    width: 100%;
+    height: 100%
+}
+
+span{
+    margin: auto;
+}

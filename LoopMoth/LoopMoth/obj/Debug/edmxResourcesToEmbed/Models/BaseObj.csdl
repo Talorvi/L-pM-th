@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="loopmothModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Autorzy">
+    <Key>
+      <PropertyRef Name="id_autora" />
+    </Key>
+    <Property Name="id_autora" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="imie" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Prace" Relationship="Self.Prace_Autorzy" FromRole="Autorzy" ToRole="Prace" />
+  </EntityType>
+  <EntityType Name="Kategorie">
+    <Key>
+      <PropertyRef Name="id_kategorii" />
+    </Key>
+    <Property Name="nazwa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="id_kategorii" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dziedzina" Type="Int32" />
+    <NavigationProperty Name="Kategorie1" Relationship="Self.FK__Kategorie__dzied__3E52440B" FromRole="Kategorie" ToRole="Kategorie1" />
+    <NavigationProperty Name="Kategorie2" Relationship="Self.FK__Kategorie__dzied__3E52440B" FromRole="Kategorie1" ToRole="Kategorie" />
+    <NavigationProperty Name="Prace" Relationship="Self.Prace_Kategorie" FromRole="Kategorie" ToRole="Prace" />
+  </EntityType>
+  <EntityType Name="Prace">
+    <Key>
+      <PropertyRef Name="id_pracy" />
+    </Key>
+    <Property Name="id_pracy" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="tytul" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="jezyk" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="rodzaj" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="rok_publikacji" Type="Int32" />
+    <Property Name="slowa_kluczowe" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="id_wydawcy" Type="Int32" />
+    <NavigationProperty Name="Wydawcy" Relationship="Self.FK__Prace__id_wydawc__3B75D760" FromRole="Prace" ToRole="Wydawcy" />
+    <NavigationProperty Name="Autorzy" Relationship="Self.Prace_Autorzy" FromRole="Prace" ToRole="Autorzy" />
+    <NavigationProperty Name="Kategorie" Relationship="Self.Prace_Kategorie" FromRole="Prace" ToRole="Kategorie" />
+  </EntityType>
+  <EntityType Name="Wydawcy">
+    <Key>
+      <PropertyRef Name="id_wydawcy" />
+    </Key>
+    <Property Name="nazwa" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="id_wydawcy" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <NavigationProperty Name="Prace" Relationship="Self.FK__Prace__id_wydawc__3B75D760" FromRole="Wydawcy" ToRole="Prace" />
+  </EntityType>
+  <Association Name="FK__Kategorie__dzied__3E52440B">
+    <End Role="Kategorie" Type="Self.Kategorie" Multiplicity="0..1" />
+    <End Role="Kategorie1" Type="Self.Kategorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategorie">
+        <PropertyRef Name="id_kategorii" />
+      </Principal>
+      <Dependent Role="Kategorie1">
+        <PropertyRef Name="dziedzina" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Prace__id_wydawc__3B75D760">
+    <End Role="Wydawcy" Type="Self.Wydawcy" Multiplicity="0..1" />
+    <End Role="Prace" Type="Self.Prace" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Wydawcy">
+        <PropertyRef Name="id_wydawcy" />
+      </Principal>
+      <Dependent Role="Prace">
+        <PropertyRef Name="id_wydawcy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Prace_Autorzy">
+    <End Role="Autorzy" Type="Self.Autorzy" Multiplicity="*" />
+    <End Role="Prace" Type="Self.Prace" Multiplicity="*" />
+  </Association>
+  <Association Name="Prace_Kategorie">
+    <End Role="Kategorie" Type="Self.Kategorie" Multiplicity="*" />
+    <End Role="Prace" Type="Self.Prace" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Autorzy" EntityType="Self.Autorzy" />
+    <EntitySet Name="Kategorie" EntityType="Self.Kategorie" />
+    <EntitySet Name="Prace" EntityType="Self.Prace" />
+    <EntitySet Name="Wydawcy" EntityType="Self.Wydawcy" />
+    <AssociationSet Name="FK__Kategorie__dzied__3E52440B" Association="Self.FK__Kategorie__dzied__3E52440B">
+      <End Role="Kategorie" EntitySet="Kategorie" />
+      <End Role="Kategorie1" EntitySet="Kategorie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Prace__id_wydawc__3B75D760" Association="Self.FK__Prace__id_wydawc__3B75D760">
+      <End Role="Wydawcy" EntitySet="Wydawcy" />
+      <End Role="Prace" EntitySet="Prace" />
+    </AssociationSet>
+    <AssociationSet Name="Prace_Autorzy" Association="Self.Prace_Autorzy">
+      <End Role="Autorzy" EntitySet="Autorzy" />
+      <End Role="Prace" EntitySet="Prace" />
+    </AssociationSet>
+    <AssociationSet Name="Prace_Kategorie" Association="Self.Prace_Kategorie">
+      <End Role="Kategorie" EntitySet="Kategorie" />
+      <End Role="Prace" EntitySet="Prace" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
