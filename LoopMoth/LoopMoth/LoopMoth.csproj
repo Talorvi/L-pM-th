@@ -51,6 +51,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -160,6 +164,7 @@
     <Compile Include="Models\Prace.cs">
       <DependentUpon>BaseObj.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\WorkPiece.cs" />
     <Compile Include="Models\Wydawcy.cs">
       <DependentUpon>BaseObj.tt</DependentUpon>
     </Compile>
