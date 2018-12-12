@@ -47,7 +47,7 @@
                         {
                             <br />
                         }
-                        @Html.DisplayFor(das => author)
+                        @Html.DisplayFor(das => author.imie)
                     }
                 </td>
                 <td>
@@ -63,7 +63,7 @@
                     @Html.DisplayFor(modelItem => item.slowa_kluczowe)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.wydawca)
+                    @Html.DisplayFor(modelItem => item.wydawca.nazwa)
                 </td>
                 <td>
                     @foreach (var cat in item.kategorie)
@@ -72,16 +72,17 @@
                         {
                            <br />
                         }
-                        @Html.DisplayFor(das => cat)
+                        @Html.DisplayFor(das => cat.nazwa)
                     }
                 </td>
-                @*<td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.id_pracy }) |
+                <td>
+                    @Ajax.ActionLink("+", "Create", "Kategorie",new AjaxOptions() { UpdateTargetId="Result" })
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.id_pracy }) |
                     @Html.ActionLink("Details", "Details", new { id = item.id_pracy }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.id_pracy })
-                </td>*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id_pracy })*@
+                </td>
             </tr>
         }
     </table>
+    <div id="Result"></div>
 </div>
-

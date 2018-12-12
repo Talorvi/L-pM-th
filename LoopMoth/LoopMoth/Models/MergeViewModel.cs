@@ -19,10 +19,10 @@ namespace LoopMoth.Models
         [DisplayName("Słowa kluczowe")]
         public string slowa_kluczowe { get; set; }
         [DisplayName("Wydawca")]
-        public string wydawca { get; set; }
+        public Wydawcy wydawca { get; set; }
         [DisplayName("Autorzy")]
-        public ICollection<string> autorzy { get; set; }
+        public ICollection<Autorzy> autorzy { get; set; }
         [DisplayName("Kategorie")]
-        public ICollection<string> kategorie { get; set; }
+        public ICollection<Kategorie> kategorie { get; set; }
     }
 }

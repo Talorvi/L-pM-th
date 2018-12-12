@@ -122,13 +122,15 @@
     <Content Include="Scripts\dropzone.min.js" />
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\script.js" />
     <Content Include="Scripts\tables.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\PraceController.cs" />
+    <Compile Include="Controllers\KategorieController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -175,13 +177,14 @@
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Prace\Create.cshtml" />
-    <Content Include="Views\Prace\Delete.cshtml" />
-    <Content Include="Views\Prace\Details.cshtml" />
-    <Content Include="Views\Prace\Edit.cshtml" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Views\Index.cshtml" />
     <Content Include="Views\Merge\Index.cshtml" />
+    <Content Include="Views\Kategorie\Create.cshtml" />
+    <Content Include="Views\Kategorie\Delete.cshtml" />
+    <Content Include="Views\Kategorie\Details.cshtml" />
+    <Content Include="Views\Kategorie\Edit.cshtml" />
+    <Content Include="Views\Kategorie\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

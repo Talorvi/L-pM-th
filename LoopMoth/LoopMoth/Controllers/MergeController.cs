@@ -23,17 +23,17 @@ namespace LoopMoth.Models
                 mod.rok_publikacji = p.rok_publikacji;
                 mod.slowa_kluczowe = p.slowa_kluczowe;
                 mod.tytul = p.tytul;
-                if(p.Wydawcy != null) mod.wydawca = p.Wydawcy.nazwa;
-                var aut_list = new List<string>();
+                if(p.Wydawcy != null) mod.wydawca = p.Wydawcy;
+                var aut_list = new List<Autorzy>();
                 foreach(var a in p.Autorzy)
                 {
-                    aut_list.Add(a.imie);
+                    aut_list.Add(a);
                 }
                 mod.autorzy = aut_list;
-                var cat_list = new List<string>();
+                var cat_list = new List<Kategorie>();
                 foreach(var c in p.Kategorie)
                 {
-                    cat_list.Add(c.nazwa);
+                    cat_list.Add(c);
                 }
                 mod.kategorie = cat_list;
                 list.Add(mod);
@@ -111,6 +111,10 @@ namespace LoopMoth.Models
             {
                 return View();
             }
+        }
+        public ActionResult Test()
+        {
+            return Content("test");
         }
         protected override void Dispose(bool disposing)
         {
