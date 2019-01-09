@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LoopMoth.Models;
 
 namespace pdfExtractor
 {
@@ -67,6 +68,8 @@ namespace pdfExtractor
             
             reader.Close();
         }
+
+        
 
         /*public void SetInfo(string myfilepath, string keyword, string message)
         {
