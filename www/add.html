@@ -19,11 +19,12 @@
     <link rel="stylesheet" type="text/css" href="css/add.css">
     <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-treeview.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
   </head>
 
   <body>
-
+  
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
       <div class="container-fluid">
@@ -49,6 +50,34 @@
 
     <!-- Page Content -->
     <div class="container" id="content">
+      <div class="curtain">
+        
+      </div>
+      <div class="popUp"><div id="tree">
+
+        <ul style="list-style:none;font-size:large;">
+
+          <ul style="list-style:none;font-size:large;">
+
+            <ul style="list-style:none;font-size:large;">
+
+              <li>
+                <a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-success="hideBranch('1','0')" data-ajax-update="#result_1" href="/Kategorie/List/1" id="+1">+</a>
+                <a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-success="hideBranch('1','1')" data-ajax-update="#result_1" href="/Kategorie/Clear" id="-1" style="display:none">-</a>
+                <input id="Check_Cat" name="Check_Cat" type="checkbox" value="1"><input name="Check_Cat" type="hidden" value="false">
+                <div class="category">Kategoria 1</div>
+                <div id="result_1"></div>
+              </li>
+              <li>
+                <a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-success="hideBranch('2','0')" data-ajax-update="#result_2" href="/Kategorie/List/2" id="+2">+</a>
+                <a data-ajax="true" data-ajax-method="POST" data-ajax-mode="replace" data-ajax-success="hideBranch('2','1')" data-ajax-update="#result_2" href="/Kategorie/Clear" id="-2" style="display:none">-</a>
+                <input id="Check_Cat" name="Check_Cat" type="checkbox" value="2"><input name="Check_Cat" type="hidden" value="false">
+                <div class="category">Kategoria 2</div>
+                <div id="result_2"></div>
+              </li>
+            </ul>
+
+      </div></div>
         <div class="dropzone"></div>
         <div class="element">
           <table class="table table-striped">
@@ -72,6 +101,10 @@
               <th scope="col"><label>Keywords:</label></th>
               <th scope="col"><input type="text" name="keywords" /></th>
             </tr>
+            <tr>
+              <th scope="col"><label>Categories:</label></th>
+              <th scope="col"><input type="text" id="categories" /></th>
+            </tr>
           </table>
         </div>
     </div>
@@ -80,10 +113,14 @@
     <script src="js/skrypt.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="bootstrap/js/bootstrap.bundle.js"></script>
+    <script src="js/bootstrap-treeview.js"></script>
     <script src="js/dropzone.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
     <script type="text/javascript">
+      $(".popUp").hide();
+      $(".curtain").hide();
+
       $(".dropzone").dropzone({
         url: 'upload.php'
       })
@@ -98,7 +135,150 @@
           $(".dropzone").css("border", "5px dashed rgba(0,0,0,0.05)");
        } 
       );
-      
+
+      function getTree() {
+        var tree = //[{"text":"Kategoria 1","nodes":null},{"text":"Kategoria 2","nodes":[{"text":"Kategoria 3","nodes":null}]}];
+        [
+          {
+            text: "Parent 1",
+            nodes: [
+              {
+                text: "Child 1",
+                nodes: [
+                  {
+                    text: "Grandchild 1",
+                    nodes: [
+                      {
+                        text: "Grandgrandchild 1"
+                      }
+                    ]
+                  },
+                  {
+                    text: "Grandchild 2"
+                  }
+                ]
+              },
+              {
+                text: "Child 2"
+              }
+            ]
+          },
+          {
+            text: "Parent 2"
+          },
+          {
+            text: "Parent 3"
+          },
+          {
+            text: "Parent 4"
+          },
+          {
+            text: "Parent 5"
+          }
+        ];
+        // Some logic to retrieve, or generate tree structure
+        return tree;
+      }
+
+      //$('#tree').treeview({data: getTree()});
+      // $('#tree').treeview({
+      //   // The naming convention for callback's is to prepend with `on`
+      //   // and capitalize the first letter of the event name
+      //   // e.g. nodeSelected -> onNodeSelected
+      //   data: getTree(),
+      //   onNodeSelected: function(event, data) {
+      //     //alert(data.nodes[0].text); //eto wazhnoe
+      //
+      //     checkIfNodeHasParent(data);
+      //     checkIfNodeHasChildren(data);
+      //     /*var parent=$('#tree').treeview('getParent', data);
+      //     if(!isFunction(parent.text)){
+      //       //alert(parent.text)
+      //       $('#tree').treeview('unselectNode', [ parent, { silent: true } ]);
+      //     }*/
+      //   }
+      // });
+
+      function checkIfNodeHasParent(node){
+        var parent=$('#tree').treeview('getParent', node);
+        if(!isFunction(parent.text)){
+          $('#tree').treeview('unselectNode', [ parent, { silent: true } ]);
+          checkIfNodeHasParent(parent);
+        }
+        else{
+          $('#tree').treeview('unselectNode', [ node, { silent: true } ]);
+        }
+      }
+
+      function checkIfNodeHasChildren(node){
+        //ad eto wazhnoe- dokończyć rekurencyjnie sprawdzanie dzieci
+
+        //alert(Object.size(node.nodes));
+
+        if(Object.size(node.nodes)>0){
+          for(var i =0; i < Object.size(node.nodes); i++){
+            var newnode = node.nodes[i];
+            $('#tree').treeview('unselectNode', [ newnode, { silent: true } ]);
+          }
+        }
+        else{
+          //alert("niet");
+          //return true;
+        }
+      }
+
+      Object.size = function(obj) {
+        var size = 0, key;
+        for (key in obj) {
+            if (obj.hasOwnProperty(key)) size++;
+        }
+        return size;
+      };
+
+      function unselectChildElement(item, index){
+        //alert(item + " " + index );
+        $('#tree').treeview('unselectNode', [ item, { silent: true } ]);
+        //checkIfNodeHasChildren(item);
+      }
+
+      function isFunction(functionToCheck) {
+        return functionToCheck && {}.toString.call(functionToCheck) === '[object Function]';
+      }
+
+      /*$('#tree').on('nodeSelected', function(event, data) {
+        //var parent=$('#tree').treeview('getParent', data);
+        if($('#tree').treeview('getParent', data.node)!==undefined){
+          alert(data.node+" ma rodzica!");
+        }
+        else{
+          alert(data.node+" nie ma rodzica!");
+        }
+      });*/
+
+      $("#categories").click(function(){
+        $(".curtain").show();
+        $(".popUp").show("slow");
+      });
+
+      $(".curtain").click(function(){
+        $(".curtain").hide();
+        $(".popUp").hide("fast");
+
+        var checked_ids = [];
+        var checked_categories = [];
+        $.each($("input[name='Check_Cat']:checked"), function(){
+          checked_ids.push($(this).val());
+          checked_categories.push($(this).parent().find(".category").text());
+        });
+
+        //alert(checked_ids);
+        $("#categories").val(checked_categories);
+
+      });
+
+      $("#categories").keypress(function(e) {
+        e.preventDefault();
+      });
 
     </script>
 
