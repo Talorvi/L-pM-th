@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using LoopMoth.Models;
+using System.Web.Script.Serialization;
 
 namespace LoopMoth.Controllers
 {
@@ -14,26 +15,22 @@ namespace LoopMoth.Controllers
     {
         private Entities db = new Entities();
 
-        // GET: Kategorie
-        public JsonResult Index()
+        private void Kat_List_Add(ref List<uKategoria> list, IQueryable<Kategorie> kategorie)
         {
-            var kategorie = db.Kategorie.Include(k => k.Kategorie2);
-            return Json(kategorie);
-        }
-
-        // GET: Kategorie/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            foreach (var it in kategorie)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                var tmp = new uKategoria();
+                tmp.nazwa = it.nazwa;
+                tmp.id_kategorii = it.id_kategorii;
+                var pk = db.Kategorie.Where(k => k.dziedzina == it.id_kategorii);
+                if (pk.Count() > 0)
+                {
+                    var plist = new List<uKategoria>();
+                    Kat_List_Add(ref plist, pk);
+                    tmp.podkategorie = plist.ToArray();
+                }
+                list.Add(tmp);
             }
-            Kategorie kategorie = db.Kategorie.Find(id);
-            if (kategorie == null)
-            {
-                return HttpNotFound();
-            }
-            return View(kategorie);
         }
 
         // GET: Kategorie/Create
@@ -41,6 +38,26 @@ namespace LoopMoth.Controllers
         {
             ViewBag.dziedzina = new SelectList(db.Kategorie, "id_kategorii", "nazwa");
             return PartialView();
+        }
+
+        public ActionResult _List(int id)
+        {
+            ViewBag.Id = id;
+            IQueryable<Kategorie> list;
+            if (id == -1)
+            {
+                list = db.Kategorie.Where(k => k.dziedzina == null);
+            }
+            else
+            {
+                list = db.Kategorie.Where(k => k.dziedzina == id);
+            }
+            return PartialView(list);
+        }
+
+        public EmptyResult Clear()
+        {
+            return null;
         }
 
         // POST: Kategorie/Create

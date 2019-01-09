@@ -1,0 +1,16 @@
+﻿@model IEnumerable<LoopMoth.Models.Kategorie>
+<ul style="list-style:none;font-size:large;">
+
+@foreach (var item in Model) {
+    <li>
+        @Ajax.ActionLink("+", "_List", new { id = item.id_kategorii }, new AjaxOptions() { UpdateTargetId = "result_" + item.id_kategorii , HttpMethod = "POST", OnSuccess = "hideBranch('" + item.id_kategorii + "','0')" },new { id="+"+item.id_kategorii})
+        @Ajax.ActionLink("-","Clear", null , new AjaxOptions() { UpdateTargetId = "result_" + item.id_kategorii, HttpMethod = "POST", OnSuccess = "hideBranch('" + item.id_kategorii + "','1')" },new { id = "-" + item.id_kategorii, style="display:none" })
+        @Html.CheckBox("Check_Cat", new { value = item.id_kategorii })
+        <div class="category">@Html.DisplayFor(s => item.nazwa)</div>
+        <div id="result_@item.id_kategorii"></div>
+    </li>
+}
+    <li>
+        @Ajax.ActionLink("Dodaj kategorię","Add",new { id = ViewBag.Id },new AjaxOptions { })
+    </li>
+</ul>

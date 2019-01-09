@@ -76,13 +76,24 @@
                     }
                 </td>
                 <td>
-                    @Ajax.ActionLink("+", "Create", "Kategorie",new AjaxOptions() { UpdateTargetId="Result" })
-                    @*@Html.ActionLink("Edit", "Edit", new { id = item.id_pracy }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.id_pracy }) |
+                    @*Ajax.ActionLink("+", "Edit", "Kategorie",new AjaxOptions() { UpdateTargetId="Result" })
+                    @@Html.ActionLink("das", "Index", "Kategorie")
+                    @*Html.ActionLink("Details", "Details", new { id = item.id_pracy }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.id_pracy })*@
                 </td>
             </tr>
         }
     </table>
-    <div id="Result"></div>
+    @Html.Action("_List","Kategorie",new { id = -1 })
 </div>
+<script>
+    function hideBranch(id, yes) {
+        if (yes == 0) {
+            document.getElementById("+" + id).style.display = 'none';
+            document.getElementById("-" + id).style.display = 'inline-block';
+        } else {
+            document.getElementById("+" + id).style.display = 'inline-block';
+            document.getElementById("-" + id).style.display = 'none';
+        }
+    }
+</script>

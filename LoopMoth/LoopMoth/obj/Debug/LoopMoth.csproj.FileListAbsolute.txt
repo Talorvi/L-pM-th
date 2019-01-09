@@ -72,3 +72,10 @@ C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\System.Web.Mvc.xml
 C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\obj\Debug\LoopMoth.csprojResolveAssemblyReference.cache
 C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\obj\Debug\LoopMoth.dll
 C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\obj\Debug\LoopMoth.pdb
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\itextsharp.dll
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\itextsharp.xml
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\Antlr3.Runtime.dll
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\Newtonsoft.Json.dll
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\WebGrease.dll
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\Antlr3.Runtime.pdb
+C:\Users\xgumi\Source\Repos\NewRepo\LoopMoth\LoopMoth\bin\Newtonsoft.Json.xml
