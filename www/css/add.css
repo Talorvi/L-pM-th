@@ -64,3 +64,33 @@
 span{
     margin: auto;
 }
+
+.popUp{
+    display: block;
+    position: fixed;
+    margin: auto;
+    width: 50%;
+    height: auto;
+    max-height: 45%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: auto
+}
+
+.curtain{
+    display: block;
+    position: fixed;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.8);
+}
+
+#tree{
+    display: block;
+    position: relative;
+}
