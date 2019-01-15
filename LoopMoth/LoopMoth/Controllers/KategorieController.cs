@@ -42,6 +42,7 @@ namespace LoopMoth.Controllers
 
         public ActionResult _List(int id)
         {
+            BibExport sex = new BibExport();
             ViewBag.Id = id;
             IQueryable<Kategorie> list;
             if (id == -1)

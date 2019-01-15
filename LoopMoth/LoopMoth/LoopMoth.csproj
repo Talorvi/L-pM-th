@@ -165,6 +165,7 @@
     <Compile Include="Models\Prace.cs">
       <DependentUpon>BaseObj.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\uKategoria.cs" />
     <Compile Include="Models\WorkPiece.cs" />
     <Compile Include="Models\Wydawcy.cs">
       <DependentUpon>BaseObj.tt</DependentUpon>
@@ -192,6 +193,7 @@
     <Content Include="Views\Kategorie\Edit.cshtml" />
     <Content Include="Views\Kategorie\Index.cshtml" />
     <Content Include="Views\test.cshtml" />
+    <Content Include="Views\Kategorie\_List.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -26,18 +26,18 @@ namespace LoopMoth.Models
                 x += "author={";
                 foreach (var j in i.Autorzy)
                 {
-                    x += j + ", ";
+                    x += j.imie + ", ";
                 }
-                x = x.Substring(x.Length - 2);
+                x = x.Substring(0,x.Length - 2);
                 x += "},";
                 x += "publisher ={ ";
-                x += i.Wydawcy;
+                x += i.Wydawcy.nazwa;
                 x += "}, ";
                 x += "year={" + i.rok_publikacji + "}},";
 
             }
-            x = x.Substring(x.Length - 1);
-            File.WriteAllText("test.bib", x);
+            x = x.Substring(0,x.Length - 1);
+            File.WriteAllText("C:\\www\\test.bib", x);
         }
     }
 }
