@@ -84,16 +84,4 @@
             </tr>
         }
     </table>
-    @Html.Action("_List","Kategorie",new { id = -1 })
 </div>
-<script>
-    function hideBranch(id, yes) {
-        if (yes == 0) {
-            document.getElementById("+" + id).style.display = 'none';
-            document.getElementById("-" + id).style.display = 'inline-block';
-        } else {
-            document.getElementById("+" + id).style.display = 'inline-block';
-            document.getElementById("-" + id).style.display = 'none';
-        }
-    }
-</script>

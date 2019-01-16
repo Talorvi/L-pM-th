@@ -33,111 +33,85 @@ namespace LoopMoth.Controllers
             }
         }
 
-        // GET: Kategorie/Create
-        public ActionResult Create()
+        public ActionResult _List()
         {
-            ViewBag.dziedzina = new SelectList(db.Kategorie, "id_kategorii", "nazwa");
-            return PartialView();
-        }
-
-        public ActionResult _List(int id)
-        {
-            BibExport sex = new BibExport();
-            ViewBag.Id = id;
+            ViewBag.Id = -1;
             IQueryable<Kategorie> list;
-            if (id == -1)
+            if (Request["id"] != null)
             {
-                list = db.Kategorie.Where(k => k.dziedzina == null);
-            }
-            else
-            {
+                var id = int.Parse(Request["id"]);
+                ViewBag.Id = id;
                 list = db.Kategorie.Where(k => k.dziedzina == id);
-            }
+                
+            }else list = db.Kategorie.Where(k => k.dziedzina == null);
             return PartialView(list);
         }
 
-        public EmptyResult Clear()
+        public JsonResult Create()
         {
-            return null;
+            try
+            {
+                if (Request["id"] != null)
+                {
+                    System.Diagnostics.Debug.WriteLine(Request["id"]);
+                    var id = int.Parse(Request["id"]);
+                    if (Request["name"] != null)
+                    {
+                        System.Diagnostics.Debug.WriteLine(Request["name"]);
+                        var tmp = new Kategorie();
+                        tmp.id_kategorii = -1;
+                        tmp.nazwa = Request["name"];
+                        if (id != -1) tmp.dziedzina = id;
+                        db.Kategorie.Add(tmp);
+                        db.SaveChanges();
+                        var iid = tmp.id_kategorii;
+                        return Json(new { result = true, id = iid }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception er) { System.Diagnostics.Debug.WriteLine(er.Message); }
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Kategorie/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "nazwa,id_kategorii,dziedzina")] Kategorie kategorie)
+        public JsonResult Edit()
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.Kategorie.Add(kategorie);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.dziedzina = new SelectList(db.Kategorie, "id_kategorii", "nazwa", kategorie.dziedzina);
-            return View(kategorie);
+                if (Request["id"] != null)
+                {
+                    var id = int.Parse(Request["id"]);
+                    Kategorie kategorie = db.Kategorie.Find(id);
+                    if (kategorie != null)
+                    {
+                        if (Request["name"] != null)
+                        {
+                            kategorie.nazwa = Request["name"];
+                            db.SaveChanges();
+                            return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                }
+            }catch(Exception er) { System.Diagnostics.Debug.WriteLine(er.Message); }
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Kategorie/Edit/5
-        public ActionResult Edit(int? id)
+        public JsonResult Delete()
         {
-            if (id == null)
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                if (Request["id"] != null)
+                {
+                    int id = int.Parse(Request["id"]);
+                    var item = db.Kategorie.SingleOrDefault(k => k.id_kategorii == id);
+                    db.Kategorie.Remove(item);
+                    db.SaveChanges();
+                    return Json(new { result = true }, JsonRequestBehavior.AllowGet);
+                }
             }
-            Kategorie kategorie = db.Kategorie.Find(id);
-            if (kategorie == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.dziedzina = new SelectList(db.Kategorie, "id_kategorii", "nazwa", kategorie.dziedzina);
-            return View(kategorie);
+            catch(Exception er) { System.Diagnostics.Debug.WriteLine(er.Message); }
+            return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
-
-        // POST: Kategorie/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "nazwa,id_kategorii,dziedzina")] Kategorie kategorie)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(kategorie).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.dziedzina = new SelectList(db.Kategorie, "id_kategorii", "nazwa", kategorie.dziedzina);
-            return View(kategorie);
-        }
-
-        // GET: Kategorie/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Kategorie kategorie = db.Kategorie.Find(id);
-            if (kategorie == null)
-            {
-                return HttpNotFound();
-            }
-            return View(kategorie);
-        }
-
-        // POST: Kategorie/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Kategorie kategorie = db.Kategorie.Find(id);
-            db.Kategorie.Remove(kategorie);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)

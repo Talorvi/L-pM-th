@@ -10,6 +10,7 @@ namespace LoopMoth.Models
     public class MergeController : Controller
     {
         private Entities db = new Entities();
+        private int[] ids;
         // GET: Merge
         public ActionResult Index()
         {
@@ -48,29 +49,13 @@ namespace LoopMoth.Models
         }
 
         // GET: Merge/Create
-        public ActionResult Create()
+        public ActionResult Add()
         {
             return View();
         }
 
-        // POST: Merge/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         // GET: Merge/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit()
         {
             return View();
         }
@@ -96,25 +81,13 @@ namespace LoopMoth.Models
         {
             return View();
         }
-
-        // POST: Merge/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public EmptyResult _Ids()
         {
-            try
+            if (Request["ids"] != null)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                ids = Request["ids"].Split(',').Select(x => { int value;bool success = int.TryParse(x, out value); return new { value,success }; }).Where(s=>s.success).Select(s=>s.value).ToArray();
             }
-            catch
-            {
-                return View();
-            }
-        }
-        public ActionResult Test()
-        {
-            return Content("test");
+            return null;
         }
         protected override void Dispose(bool disposing)
         {

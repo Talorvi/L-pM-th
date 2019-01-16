@@ -185,15 +185,12 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
-    <Content Include="Views\Index.cshtml" />
     <Content Include="Views\Merge\Index.cshtml" />
-    <Content Include="Views\Kategorie\Create.cshtml" />
-    <Content Include="Views\Kategorie\Delete.cshtml" />
-    <Content Include="Views\Kategorie\Details.cshtml" />
-    <Content Include="Views\Kategorie\Edit.cshtml" />
     <Content Include="Views\Kategorie\Index.cshtml" />
-    <Content Include="Views\test.cshtml" />
     <Content Include="Views\Kategorie\_List.cshtml" />
+    <Content Include="Views\Merge\_DataForm.cshtml" />
+    <Content Include="Views\Merge\Add.cshtml" />
+    <Content Include="Views\Merge\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

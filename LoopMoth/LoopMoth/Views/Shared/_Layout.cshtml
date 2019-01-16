@@ -14,10 +14,13 @@
     <link href="https://bootswatch.com/4/lux/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Muli">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="~/Content/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/add.css">
     <!--<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
     <link rel="icon" type="image/png" href="~/Content/eeeoooo.png">
+    <script src="~/Scripts/jquery.min.js"></script>
   </head>
 
   <body>
@@ -32,10 +35,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="index.html">Home</a>
+              <a class="nav-link" href="@Url.Action("Index","Merge")">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="add.html">Add</a>
+              <a class="nav-link" href="@Url.Action("Add","Merge")">Add</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Contact</a>
@@ -49,17 +52,14 @@
     @RenderBody()
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/skrypt.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/functions.js"></script>
     <script src="~/Scripts/bootstrap.bundle.js"></script>
     <script type="text/javascript">
-    $(document).ready(function() {
-        $('#example').DataTable();
-    } );
+        $('body').html();
     </script>
     <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 
   </body>
-
 </html>

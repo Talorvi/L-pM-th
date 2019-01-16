@@ -1,0 +1,167 @@
+﻿@model IEnumerable<LoopMoth.Models.MergeViewModel>
+
+<div class="container" id="content">
+    <div class="curtain">
+    </div>
+    <div class="popUp">
+        @Html.Action("_List", "Kategorie", new { id = -1 })
+    </div>
+    <div class="element">
+        <table class="table table-striped">
+            <tr>
+                <th scope="col"><label>Author:</label></th>
+                <th scope="col"><input type="text" name="author" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Title:</label></th>
+                <th scope="col"><input type="text" name="title" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Creator:</label></th>
+                <th scope="col"><input type="text" name="creator" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Subject:</label></th>
+                <th scope="col"><input type="text" name="subject" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Keywords:</label></th>
+                <th scope="col"><input type="text" name="keywords" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Categories:</label></th>
+                <th scope="col"><input type="text" id="categories" /></th>
+            </tr>
+        </table>
+    </div>
+    <input id="save_button" type="button" value="Zapisz" />
+</div>
+<script type="text/javascript">
+    $(".popUp").hide();
+    $(".curtain").hide();
+    $("#categories").click(function () {
+        $(".curtain").show();
+        $(".popUp").show("slow");
+    });
+
+    $(".curtain").click(function () {
+        $(".curtain").hide();
+        $(".popUp").hide("fast");
+
+        var checked_ids = [];
+        var checked_categories = [];
+        $.each($("input[name='Check_Cat']:checked"), function () {
+            let id = $(this).val();
+            checked_ids.push(id);
+            checked_categories.push($('div.category').filter('#cat_'+id).first().text());
+        });
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("_Ids")',
+            data: { 'ids': checked_ids.join(',') },
+            success: function (res) {
+                console.log(res);
+            }
+        });
+        $("#categories").val(checked_categories);
+    });
+
+    $("#categories").keypress(function (e) {
+        e.preventDefault();
+    });
+    $(".click_input_div").each(function (event) {
+        $(this).hide();
+    });
+
+    function showEdit(id) {
+        let li = $('li').filter('#cat_'+id);
+        li.find(".click_input_div").first().show();
+        let name = li.find('.category').first();
+        li.find(".click_input").first().val(name.text());
+        name.hide();
+    }
+
+    function unfold(id,plus) {
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("_List","Kategorie")',
+            data: { 'id': id },
+            success: function (res) {
+                if (plus == 1) {
+                    document.getElementById('+' + id).style.display = "none";
+                    document.getElementById('-' + id).style.display = "inline-block";
+                    $('#result_' + id).html(res);
+                } else {
+                    document.getElementById('+' + id).style.display = "inline-block";
+                    document.getElementById('-' + id).style.display = "none";
+                    $('#result_' + id).html('');
+                }
+            }
+        });
+    }
+    function cat_delete(id) {
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("Delete","Kategorie")',
+            data: { 'id': id },
+            success: function (res) {
+                if (res['result'] == true) {
+                    $('li').filter('#cat_'+id).remove();
+                } else alert("Nie udało się usunąć kategorii.");
+            }
+        });
+    }
+    function editCat(id,confirm) {
+        let name = $('.click_input').filter('#cat_' + id).val();
+        $('.click_input_div').filter('#cat_' + id).hide()
+        if (confirm == 1) {
+            $.ajax({method: 'POST',
+                url: '@Url.Action("Edit","Kategorie")',
+                data: { 'id': id, 'name': name },
+                success: function (res) {
+                    if(res['result']==true)
+                        $('div.category').filter('#cat_' + id).text(name);
+                }
+            });
+        }
+        $('div.category').filter('#cat_' + id).show();
+    }
+    function showNew(id) {
+        let node;
+        node = $('#cat_new_'+id);
+        node.find('.fa-plus-circle').hide();
+        node.find(".click_input_div").show();
+    }
+    function addCat(Id, confirm) {
+        let li;
+        li = $('#cat_new_' + Id);
+        let input = li.find('.click_input_div');
+        let text = input.find('input').val();
+        if (confirm == 1) {
+            let id;
+            $.ajax({
+                method: 'POST',
+                url: '@Url.Action("Create","Kategorie")',
+                data: { 'id': Id, 'name': text },
+                success: function (res) {
+                    if (res['result'] == true) {
+                        id = res['id'];
+                        let node = $('<li>').attr('id', 'cat_' + id).append('<i id="+' + id + '" class="fas fa-plus-square" onclick="unfold(' + id + ',1)"></i>');
+                        node.append('<i id="-' + id + '" class="fas fa-minus-square" onclick="unfold(' + id + ',0)" style="display:none"></i>');
+                        node.append(' @Html.CheckBox("Check_Cat") ');
+                        node.append('<div id="cat_' + id + '" class="category">' + text + '</div>');
+                        let clck = $('<div id="cat_' + id + '" class="click_input_div" style="display:none">').append('<input id="cat_' + id + '" class="click_input" type="text" />');
+                        clck.append('<i class="fas fa-check" onclick="editCat(' + id + ',1)"></i>/<i class="fas fa-times" onclick="editCat(' + id + ',0)"></i>');
+                        node.append(clck);
+                        node.append('<i class="fas fa-trash-alt" onclick="cat_delete(' + id + ')"></i>');
+                        node.append('<div id="result_' + id + '"></div>');
+                        node.insertBefore(li);
+                    }
+                }
+            });
+        }
+        input.hide();
+        input.find('input').val('');
+        li.find('.fa-plus-circle').show();
+    }
+</script>
