@@ -36,7 +36,7 @@
 
         @foreach (var item in Model)
         {
-            <tr>
+            <tr id="@item.id_pracy">
                 <td>
                     @Html.DisplayFor(modelItem => item.tytul)
                 </td>
@@ -76,12 +76,25 @@
                     }
                 </td>
                 <td>
-                    @*Ajax.ActionLink("+", "Edit", "Kategorie",new AjaxOptions() { UpdateTargetId="Result" })
-                    @@Html.ActionLink("das", "Index", "Kategorie")
-                    @*Html.ActionLink("Details", "Details", new { id = item.id_pracy }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.id_pracy })*@
+                    <a href="@Url.Action("Edit",new { id=item.id_pracy })"><i class="fas fa-file-alt"></i></a>
+                    <i class="fas fa-trash-alt" onclick="praca_delete(@item.id_pracy)"></i>
                 </td>
             </tr>
         }
     </table>
 </div>
+
+<script>
+    function praca_delete(id) {
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("Delete")',
+            data: {'id':id },
+            success: function(res){
+                if(res['result']==true){
+                    $('#'+id).remove();
+                }else alert('Nie udało się usunąć.');
+            }
+        });
+    }
+</script>

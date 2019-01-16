@@ -5,7 +5,7 @@
     <li id="cat_@item.id_kategorii">
         <i id="+@item.id_kategorii" class="fas fa-plus-square" onclick="unfold(@item.id_kategorii,1)"></i>
         <i id="-@item.id_kategorii" class="fas fa-minus-square" onclick="unfold(@item.id_kategorii,0)" style="display:none"></i>
-        @Html.CheckBox("Check_Cat", new { value = item.id_kategorii })
+        @Html.CheckBox("Check_Cat", new { value = item.id_kategorii, onchange = "change(this)"  })
         <div id="cat_@item.id_kategorii" class="category" onclick="showEdit(@item.id_kategorii)">@Html.DisplayFor(s => item.nazwa)</div>
         <div id="cat_@item.id_kategorii" class="click_input_div" style="display:none">
             <input id="cat_@item.id_kategorii" class="click_input" type="text"/>

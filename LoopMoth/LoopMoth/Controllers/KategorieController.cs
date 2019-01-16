@@ -102,7 +102,7 @@ namespace LoopMoth.Controllers
                 if (Request["id"] != null)
                 {
                     int id = int.Parse(Request["id"]);
-                    var item = db.Kategorie.SingleOrDefault(k => k.id_kategorii == id);
+                    var item = db.Kategorie.Include("Prace").SingleOrDefault(k => k.id_kategorii == id);
                     db.Kategorie.Remove(item);
                     db.SaveChanges();
                     return Json(new { result = true }, JsonRequestBehavior.AllowGet);

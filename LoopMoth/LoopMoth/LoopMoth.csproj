@@ -186,7 +186,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Views\Merge\Index.cshtml" />
-    <Content Include="Views\Kategorie\Index.cshtml" />
     <Content Include="Views\Kategorie\_List.cshtml" />
     <Content Include="Views\Merge\_DataForm.cshtml" />
     <Content Include="Views\Merge\Add.cshtml" />

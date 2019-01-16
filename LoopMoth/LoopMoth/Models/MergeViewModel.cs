@@ -8,6 +8,11 @@ namespace LoopMoth.Models
 {
     public class MergeViewModel
     {
+        public MergeViewModel(int id)
+        {
+            id_pracy = id;
+        }
+        public int id_pracy { get; }
         [DisplayName("Tytuł")]
         public string tytul { get; set; }
         [DisplayName("Język")]
