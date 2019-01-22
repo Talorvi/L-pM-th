@@ -9,7 +9,7 @@
         <table class="table table-striped">
             <tr>
                 <th scope="col"><label>Autorzy:</label></th>
-                <th scope="col"><input type="text" name="author" value="@if (Model != null) { @Html.Raw(String.Join(", ", Model.autorzy.Select(a => a.imie))) }" /></th>
+                <th scope="col"><input type="text" name="author" value="@if (Model != null && Model.autorzy != null) { @Html.Raw(String.Join(", ", Model.autorzy.Select(a => a.imie))) }" /></th>
             </tr>
             <tr>
                 <th scope="col"><label>Tytuł:</label></th>
@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th scope="col"><label>Rok publikacji:</label></th>
-                <th scope="col"><input type="number" step="1" name="year" value="@if (Model != null) {@Html.DisplayFor(m => Model.rok_publikacji) } " /></th>
+                <th scope="col"><input type="number" step="1" name="year" value="@if (Model != null) {@Html.DisplayFor(m => Model.rok_publikacji) }" /></th>
             </tr>
             <tr>
                 <th scope="col"><label>Rodzaj:</label></th>
@@ -38,16 +38,14 @@
             <tr>
                 <th scope="col"><label>Kategorie:</label></th>
                 <th scope="col">
-                    <input type="text" id="categories" value="@if (Model != null) {@Html.Raw(String.Join(", ", Model.kategorie.Select(k => k.nazwa)))}" />
-                    <input id="ids" value="@if (Model != null) { @Html.Raw(String.Join(",", Model.kategorie.Select(k => k.id_kategorii))) }" style="display:none" />
+                    <input type="text" id="categories" value="@if (Model != null && Model.kategorie != null) {@Html.Raw(String.Join(", ", Model.kategorie.Select(k => k.nazwa)))}" />
+                    <input id="ids" value="@if (Model != null && Model.kategorie != null) { @Html.Raw(String.Join(",", Model.kategorie.Select(k => k.id_kategorii))) }" style="display:none" />
                 </th>
             </tr>
 
         </table>
-
-    </div>
-    <input id="save_button" type="button" value="Zapisz" onclick="save()"/>
-
+        <input id="save_button" type="button" value="Zapisz" onclick="save()" class="btn btn-dark"/>
+</div>
 </div>
 <script type="text/javascript">
     function save() {
@@ -61,7 +59,7 @@
         let lang = $('input[name="lang"]').val();
         $.ajax({
             method: 'POST',
-            url: '@{if (Model == null) {@Url.Action("ConfirmAdd") } else { @Url.Action("ConfirmEdit", new { id = Model.id_pracy })} }',
+            url: '@{if (Model.id_pracy  == -1) {@Url.Action("ConfirmAdd") } else { @Url.Action("ConfirmEdit", new { id = Model.id_pracy })} }',
             data: {'cat': cat,'keywords': keywords,'publisher': publisher,'type': type,'year': year,'title': title,'author': author,'lang' : lang },
             success: function (res) {
                     if (res['result'] == true) {
@@ -110,6 +108,7 @@
     $(".click_input_div").each(function (event) {
         $(this).hide();
     });
+
 
     function showEdit(id) {
         let li = $('li').filter('#cat_' + id);

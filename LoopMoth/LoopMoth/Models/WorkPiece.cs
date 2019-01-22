@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using LoopMoth.Models;
 
-namespace pdfExtractor
+namespace LoopMoth.Models
 {
     public class WorkPiece
     {
+        public WorkPiece() { }
         public WorkPiece(PdfReader MyReader,string FilePath, string Author, string Title, string Creator, string Language, string Type, string Subject, string Keywords, string CreatedDate)
         {
             this.MyReader = MyReader;
@@ -43,12 +44,11 @@ namespace pdfExtractor
             
                 if (reader.Info.ContainsKey("Author"))
                     Author = reader.Info["Author"];
-                if (reader.Info["Author"] == "" || reader.Info.ContainsKey("Author") == false)
+                if (!(reader.Info.ContainsKey("Author") && reader.Info["Author"] == ""))
                     Author = myfilepath.Name.Substring(0, myfilepath.Name.LastIndexOf(".pdf"));
-           
                 if (reader.Info.ContainsKey("Title"))
                     Title = reader.Info["Title"];
-                if (reader.Info["Title"] == "" || reader.Info.ContainsKey("Title") == false)
+                if (!(reader.Info.ContainsKey("Title") && reader.Info["Title"] == ""))
                     Title = myfilepath.Name.Substring(0, myfilepath.Name.LastIndexOf(".pdf"));
             
                 if (reader.Info.ContainsKey("Creator"))

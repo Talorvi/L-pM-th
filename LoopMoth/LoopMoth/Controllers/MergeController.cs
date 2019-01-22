@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,7 +11,6 @@ namespace LoopMoth.Models
     public class MergeController : Controller
     {
         private Entities db = new Entities();
-        private int[] ids;
         // GET: Merge
         public ActionResult Index()
         {
@@ -44,7 +44,7 @@ namespace LoopMoth.Models
 
         public ActionResult Add()
         {
-            return PartialView();
+            return View();
         }
         public JsonResult ConfirmAdd()
         {
@@ -96,8 +96,15 @@ namespace LoopMoth.Models
                 var cat = Request["cat"].Split(',').Select(a => a.Trim());
                 var base_cat = db.Kategorie.Where(a => cat.Contains(a.nazwa)).ToList();
                 p.Kategorie = base_cat;
-                db.Prace.Add(p);
-                db.SaveChanges();
+                if (TempData["path"] != null)
+                {
+                    db.Prace.Add(p);
+                    db.SaveChanges();
+                    var path = TempData["path"].ToString();
+                    var file = new FileInfo(path);
+                    path = Path.Combine(Server.MapPath("~/Content/Id/"), p.id_pracy.ToString()+".pdf");
+                    file.CopyTo(path);
+                }
                 return Json(new { result = true }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception er) { System.Diagnostics.Debug.WriteLine(er.Message); }
@@ -195,6 +202,64 @@ namespace LoopMoth.Models
             catch (Exception er) { System.Diagnostics.Debug.WriteLine(er.Message); }
             return Json(new { result = false }, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult Upload()
+        {
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(Server.MapPath("~/Content/Files/"), fileName);
+                    System.Diagnostics.Debug.WriteLine(path);
+                    file.SaveAs(path);
+                    TempData["path"]=path;
+                    var read = new WorkPiece();
+                    var reader = new iTextSharp.text.pdf.PdfReader(path);
+                    read.GetInfoFromPDF(reader, new FileInfo(path));
+                    var model = new MergeViewModel(-1);
+                    if(read.Author != null)
+                    {
+                        var auth = read.Author.Split(',').Select(a => a.Trim());
+                        var base_auth = new List<Autorzy>();
+                        foreach (var a in auth)
+                        {
+                            var tmp = new Autorzy();
+                            tmp.imie = a;
+                            base_auth.Add(tmp);
+                        }
+                        model.autorzy = base_auth;
+                    }
+                    if (read.Creator != null)
+                    {
+                        var wydawca = new Wydawcy();
+                        wydawca.nazwa = read.Creator;
+                        model.wydawca = wydawca;
+                    }
+                    if(read.Subject != null)
+                    {
+                        var cat = read.Subject.Split(',').Select(a => a.Trim());
+                        var base_cat = new List<Kategorie>();
+                        foreach (var a in cat)
+                        {
+                            var tmp = new Kategorie();
+                            tmp.nazwa = a;
+                            base_cat.Add(tmp);
+                        }
+                    }
+                    model.rodzaj = read.Type;
+                    model.jezyk = read.Language;
+                    if(read.CreatedDate != null)
+                        model.rok_publikacji = int.Parse(read.CreatedDate);
+                    model.slowa_kluczowe = read.Keywords;
+                    model.tytul = read.Title;
+                    return View("Edit", model);
+                }
+            }
+            return RedirectToAction("Index");
+        }
         public JsonResult Delete()
         {
             try
@@ -203,6 +268,9 @@ namespace LoopMoth.Models
                 {
                     int id = int.Parse(Request["id"]);
                     var item = db.Prace.Include("Kategorie").Include("Autorzy").Include("Wydawcy").SingleOrDefault(p => p.id_pracy == id);
+                    var path = Path.Combine(Server.MapPath("~/Content/Id"), id.ToString() + ".pdf");
+                    var file = new FileInfo(path);
+                    file.Delete();
                     db.Prace.Remove(item);
                     db.SaveChanges();
                     return Json(new { result = true }, JsonRequestBehavior.AllowGet);
@@ -210,14 +278,6 @@ namespace LoopMoth.Models
             }
             catch (Exception er) { System.Diagnostics.Debug.WriteLine(er.Message); }
             return Json(new { result = false }, JsonRequestBehavior.AllowGet);
-        }
-        public EmptyResult _Ids()
-        {
-            if (Request["ids"] != null)
-            {
-                ids = Request["ids"].Split(',').Select(x => { int value; bool success = int.TryParse(x, out value); return new { value, success }; }).Where(s => s.success).Select(s => s.value).ToArray();
-            }
-            return null;
         }
         protected override void Dispose(bool disposing)
         {
