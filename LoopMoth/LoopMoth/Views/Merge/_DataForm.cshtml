@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th scope="col"><label>Rok publikacji:</label></th>
-                <th scope="col"><input type="number" step="1" name="year" value="@if (Model != null) {@Html.DisplayFor(m => Model.rok_publikacji) }" /></th>
+                <th scope="col"><input type="number" step="1" min="-5000" max="2000" name="year" value="@if (Model != null) {@Html.DisplayFor(m => Model.rok_publikacji) }" /></th>
             </tr>
             <tr>
                 <th scope="col"><label>Rodzaj:</label></th>
@@ -47,6 +47,7 @@
         <input id="save_button" type="button" value="Zapisz" onclick="save()" class="btn btn-dark"/>
 </div>
 </div>
+
 <script type="text/javascript">
     function save() {
         let cat = $('#ids').val();
@@ -80,11 +81,15 @@
             input.attr('checked', true);
         });
     });
+    var d = new Date();
+    var y = d.getFullYear();
+    $("input[type='number']").prop('max', y);
+
     function change(box) {
         let id = $(box).val();
         let ids = $("#ids").val().split(',');
         ids = ids.filter(Boolean);
-        let name = $(box).parent().find('.category').text();
+        let name = $(box).parent().find('.category').first().text();
         let names = $("#categories").val().split(', ');
         names = names.filter(Boolean);
         if (box.checked) { ids.push(id); names.push(name); }
@@ -190,17 +195,17 @@
                     if (res['result'] == true) {
                         id = res['id'];
                         let node = $('<li>').attr('id', 'cat_' + id).append('<i id="+' + id + '" class="fas fa-plus-square" onclick="unfold(' + id + ',1)"></i>');
-                        node.append('<i id="-' + id + '" class="fas fa-minus-square" onclick="unfold(' + id + ',0)" style="display:none"></i>');
+                        node.append('<i id="-' + id + '" class="fas fa-minus-square" onclick="unfold(' + id + ',0)" style="display:none"></i> ');
                         let box = $('<input>').attr('value', id);
                         box.attr('type', 'checkbox');
                         box.attr('name', 'Check_Cat');
                         box.attr('onchange', 'change(this)');
                         node.append(box);
-                        node.append('<div id="cat_' + id + '" class="category" onclick="showEdit('+ id +')">' + text + '</div>');
-                        let clck = $('<div id="cat_' + id + '" class="click_input_div" style="display:none">').append('<input id="cat_' + id + '" class="click_input" type="text" />');
+                        node.append(' <div id="cat_' + id + '" class="category" onclick="showEdit('+ id +')">' + text + '</div>');
+                        let clck = $(' <div id="cat_' + id + '" class="click_input_div" style="display:none">').append('<input id="cat_' + id + '" class="click_input" type="text" />');
                         clck.append('<i class="fas fa-check" onclick="editCat(' + id + ',1)"></i>/<i class="fas fa-times" onclick="editCat(' + id + ',0)"></i>');
                         node.append(clck);
-                        node.append('<i class="fas fa-trash-alt" onclick="cat_delete(' + id + ')"></i>');
+                        node.append(' <i class="fas fa-trash-alt" onclick="cat_delete(' + id + ')"></i>');
                         node.append('<div id="result_' + id + '"></div>');
                         node.insertBefore(li);
                     }

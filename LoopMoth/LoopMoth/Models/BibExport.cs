@@ -10,10 +10,9 @@ namespace LoopMoth.Models
     {
         public BibExport()
         {
-            ToBibtex();
         }
 
-        public void ToBibtex()
+        public string ToBibtex()
         {
             var db = new Entities();
             var prace = db.Prace.ToList();
@@ -37,7 +36,7 @@ namespace LoopMoth.Models
 
             }
             x = x.Substring(0,x.Length - 1);
-            File.WriteAllText("C:\\www\\test.bib", x);
+            return x;
         }
     }
 }

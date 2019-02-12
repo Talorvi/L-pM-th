@@ -18,3 +18,8 @@ table{
 #example_filter{
 	float: right;
 }
+table.dataTable tbody td{
+    word-wrap: break-word;
+    word-break: break-all;
+    white-space: normal;
+}

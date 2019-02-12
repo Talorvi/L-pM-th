@@ -44,11 +44,11 @@ namespace LoopMoth.Models
             
                 if (reader.Info.ContainsKey("Author"))
                     Author = reader.Info["Author"];
-                if (!(reader.Info.ContainsKey("Author") && reader.Info["Author"] == ""))
+                if (!reader.Info.ContainsKey("Author") || reader.Info["Author"] == "")
                     Author = myfilepath.Name.Substring(0, myfilepath.Name.LastIndexOf(".pdf"));
                 if (reader.Info.ContainsKey("Title"))
                     Title = reader.Info["Title"];
-                if (!(reader.Info.ContainsKey("Title") && reader.Info["Title"] == ""))
+                if (!reader.Info.ContainsKey("Title") || reader.Info["Title"] == "")
                     Title = myfilepath.Name.Substring(0, myfilepath.Name.LastIndexOf(".pdf"));
             
                 if (reader.Info.ContainsKey("Creator"))
@@ -68,41 +68,5 @@ namespace LoopMoth.Models
             
             reader.Close();
         }
-
-        
-
-        /*public void SetInfo(string myfilepath, string keyword, string message)
-        {
-            PdfReader myreader = new PdfReader(myfilepath);
-            String folder = Path.GetDirectoryName(myfilepath);
-            String file = Path.GetFileName(myfilepath).Remove(Path.GetFileName(myfilepath).Length - 4);
-            String dest = folder + file + "_meta.pdf";
-            Console.WriteLine(dest);
-
-            //FileStream fs = new FileStream(myfilepath, FileMode.Append, FileAccess.Write, FileShare.None);
-            PdfStamper stamper = new PdfStamper(myreader, 
-            new FileStream(dest, FileMode.Create, FileAccess.Write, FileShare.None));
-                
-            var info = myreader.Info;
-            if (myreader.Info.ContainsKey(keyword))
-                info[keyword] = message;
-            else
-                info.Add(keyword, message);
-            stamper.MoreInfo = info;
-            stamper.FormFlattening = true;
-            stamper.Close();
-
-                    /* using (var ms = new MemoryStream())
-                     {
-                         var xmp = new XmpWriter(ms, info);
-                         stamper.XmpMetadata = ms.ToArray();
-                         xmp.Close();
-                     }*/
-                
-                
-            
-           // myreader.Close();
-
-        //}
     }
 }

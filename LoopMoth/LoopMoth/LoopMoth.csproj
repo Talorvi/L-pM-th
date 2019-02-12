@@ -105,6 +105,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\add.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\dataTables.bootstrap4.min.css" />
     <Content Include="Content\eeeoooo.png" />
     <Content Include="Content\style.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -123,6 +125,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.min.js" />
     <Content Include="Scripts\dropzone.min.js" />
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Scripts\jquery.min.js" />
