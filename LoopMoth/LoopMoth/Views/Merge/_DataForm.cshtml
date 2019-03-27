@@ -1,0 +1,219 @@
+﻿@model LoopMoth.Models.MergeViewModel
+<div class="container" id="content">
+    <div class="curtain">
+    </div>
+    <div class="popUp">
+        @Html.Action("_List", "Kategorie", new { id = -1 })
+    </div>
+    <div class="element">
+        <table class="table table-striped">
+            <tr>
+                <th scope="col"><label>Autorzy:</label></th>
+                <th scope="col"><input type="text" name="author" value="@if (Model != null && Model.autorzy != null) { @Html.Raw(String.Join(", ", Model.autorzy.Select(a => a.imie))) }" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Tytuł:</label></th>
+                <th scope="col"><input type="text" name="title" value="@if (Model != null) {@Html.DisplayFor(m => Model.tytul) }" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Język:</label></th>
+                <th scope="col"><input type="text" name="lang" value="@if (Model != null) {@Html.DisplayFor(m => Model.jezyk) }" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Rok publikacji:</label></th>
+                <th scope="col"><input type="number" step="1" min="-5000" max="2000" name="year" value="@if (Model != null) {@Html.DisplayFor(m => Model.rok_publikacji) }" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Rodzaj:</label></th>
+                <th scope="col"><input type="text" name="type" value="@if (Model != null) {@Html.DisplayFor(m => Model.rodzaj) }" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Wydawca:</label></th>
+                <th scope="col"><input type="text" name="publisher" value="@if (Model != null) {@Html.DisplayFor(m => Model.wydawca.nazwa) }" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Słowa kluczowe:</label></th>
+                <th scope="col"><input type="text" name="keywords" value="@if (Model != null) { @Html.DisplayFor(m => Model.slowa_kluczowe)}" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Kategorie:</label></th>
+                <th scope="col">
+                    <input type="text" id="categories" value="@if (Model != null && Model.kategorie != null) {@Html.Raw(String.Join(", ", Model.kategorie.Select(k => k.nazwa)))}" />
+                    <input id="ids" value="@if (Model != null && Model.kategorie != null) { @Html.Raw(String.Join(",", Model.kategorie.Select(k => k.id_kategorii))) }" style="display:none" />
+                </th>
+            </tr>
+
+        </table>
+        <input id="save_button" type="button" value="Zapisz" onclick="save()" class="btn btn-dark"/>
+</div>
+</div>
+
+<script type="text/javascript">
+    function save() {
+        let cat = $('#ids').val();
+        let keywords = $('input[name="keywords"]').val();
+        let publisher = $('input[name="publisher"]').val();
+        let type = $('input[name="type"]').val();
+        let year = $('input[name="year"]').val();
+        let title = $('input[name="title"]').val();
+        let author = $('input[name="author"]').val();
+        let lang = $('input[name="lang"]').val();
+        $.ajax({
+            method: 'POST',
+            url: '@{if (Model.id_pracy  == -1) {@Url.Action("ConfirmAdd") } else { @Url.Action("ConfirmEdit", new { id = Model.id_pracy })} }',
+            data: {'cat': cat,'keywords': keywords,'publisher': publisher,'type': type,'year': year,'title': title,'author': author,'lang' : lang },
+            success: function (res) {
+                    if (res['result'] == true) {
+                        window.location = '@Url.Action("Index")';
+                    } else alert("Nie udało się dodać.");
+                }
+        });
+    }
+
+    $(".popUp").hide();
+    $(".curtain").hide();
+    $("#categories").click(function () {
+        $(".curtain").show();
+        $(".popUp").show("slow");
+        let ids = $("#ids").val().split(',');
+        $.each(ids, function () {
+            let input = $("input[name='Check_Cat'][value='" + this + "']");
+            input.attr('checked', true);
+        });
+    });
+    var d = new Date();
+    var y = d.getFullYear();
+    $("input[type='number']").prop('max', y);
+
+    function change(box) {
+        let id = $(box).val();
+        let ids = $("#ids").val().split(',');
+        ids = ids.filter(Boolean);
+        let name = $(box).parent().find('.category').first().text();
+        let names = $("#categories").val().split(', ');
+        names = names.filter(Boolean);
+        if (box.checked) { ids.push(id); names.push(name); }
+        else {
+            let indx = ids.indexOf(id);
+            if (indx > -1) ids.splice(indx, 1);
+            indx = names.indexOf(name)
+            if (indx > -1) names.splice(indx, 1);
+        }
+        $("#ids").val(ids.join(','));
+        $('#categories').val(names.join(', '));
+    }
+    $(".curtain").click(function () {
+        $(".curtain").hide();
+        $(".popUp").hide("fast");
+    });
+
+    $("#categories").keypress(function (e) {
+        e.preventDefault();
+    });
+    $(".click_input_div").each(function (event) {
+        $(this).hide();
+    });
+
+
+    function showEdit(id) {
+        let li = $('li').filter('#cat_' + id);
+        li.find(".click_input_div").first().show();
+        let name = li.find('.category').first();
+        li.find(".click_input").first().val(name.text());
+        name.hide();
+    }
+
+    function unfold(id, plus) {
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("_List","Kategorie")',
+            data: { 'id': id },
+            success: function (res) {
+                if (plus == 1) {
+                    document.getElementById('+' + id).style.display = "none";
+                    document.getElementById('-' + id).style.display = "inline-block";
+                    $('#result_' + id).html(res);
+                    let ids = $("#ids").val().split(',');
+                    $.each(ids, function () {
+                        let input = $("input[name='Check_Cat'][value='" + this + "']");
+                        input.attr('checked', true);
+                    });
+                } else {
+                    document.getElementById('+' + id).style.display = "inline-block";
+                    document.getElementById('-' + id).style.display = "none";
+                    $('#result_' + id).html('');
+                }
+            }
+        });
+    }
+    function cat_delete(id) {
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("Delete","Kategorie")',
+            data: { 'id': id },
+            success: function (res) {
+                if (res['result'] == true) {
+                    $('li').filter('#cat_' + id).remove();
+                } else alert("Nie udało się usunąć kategorii.");
+            }
+        });
+    }
+    function editCat(id, confirm) {
+        let name = $('.click_input').filter('#cat_' + id).val();
+        $('.click_input_div').filter('#cat_' + id).hide()
+        if (confirm == 1) {
+            $.ajax({
+                method: 'POST',
+                url: '@Url.Action("Edit","Kategorie")',
+                data: { 'id': id, 'name': name },
+                success: function (res) {
+                    if (res['result'] == true)
+                        $('div.category').filter('#cat_' + id).text(name);
+                }
+            });
+        }
+        $('div.category').filter('#cat_' + id).show();
+    }
+    function showNew(id) {
+        let node;
+        node = $('#cat_new_' + id);
+        node.find('.fa-plus-circle').hide();
+        node.find(".click_input_div").show();
+    }
+    function addCat(Id, confirm) {
+        let li;
+        li = $('#cat_new_' + Id);
+        let input = li.find('.click_input_div');
+        let text = input.find('input').val();
+        if (confirm == 1) {
+            let id;
+            $.ajax({
+                method: 'POST',
+                url: '@Url.Action("Create","Kategorie")',
+                data: { 'id': Id, 'name': text },
+                success: function (res) {
+                    if (res['result'] == true) {
+                        id = res['id'];
+                        let node = $('<li>').attr('id', 'cat_' + id).append('<i id="+' + id + '" class="fas fa-plus-square" onclick="unfold(' + id + ',1)"></i>');
+                        node.append('<i id="-' + id + '" class="fas fa-minus-square" onclick="unfold(' + id + ',0)" style="display:none"></i> ');
+                        let box = $('<input>').attr('value', id);
+                        box.attr('type', 'checkbox');
+                        box.attr('name', 'Check_Cat');
+                        box.attr('onchange', 'change(this)');
+                        node.append(box);
+                        node.append(' <div id="cat_' + id + '" class="category" onclick="showEdit('+ id +')">' + text + '</div>');
+                        let clck = $(' <div id="cat_' + id + '" class="click_input_div" style="display:none">').append('<input id="cat_' + id + '" class="click_input" type="text" />');
+                        clck.append('<i class="fas fa-check" onclick="editCat(' + id + ',1)"></i>/<i class="fas fa-times" onclick="editCat(' + id + ',0)"></i>');
+                        node.append(clck);
+                        node.append(' <i class="fas fa-trash-alt" onclick="cat_delete(' + id + ')"></i>');
+                        node.append('<div id="result_' + id + '"></div>');
+                        node.insertBefore(li);
+                    }
+                }
+            });
+        }
+        input.hide();
+        input.find('input').val('');
+        li.find('.fa-plus-circle').show();
+    }
+</script>

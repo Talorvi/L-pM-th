@@ -1,0 +1,25 @@
+﻿@model IEnumerable<LoopMoth.Models.Kategorie>
+<ul style="list-style:none;font-size:large;">
+
+@foreach (var item in Model) {
+    <li id="cat_@item.id_kategorii">
+        <i id="+@item.id_kategorii" class="fas fa-plus-square" onclick="unfold(@item.id_kategorii,1)"></i>
+        <i id="-@item.id_kategorii" class="fas fa-minus-square" onclick="unfold(@item.id_kategorii,0)" style="display:none"></i>
+        @Html.CheckBox("Check_Cat", new { value = item.id_kategorii, onchange = "change(this)"  })
+        <div id="cat_@item.id_kategorii" class="category" onclick="showEdit(@item.id_kategorii)">@Html.DisplayFor(s => item.nazwa)</div>
+        <div id="cat_@item.id_kategorii" class="click_input_div" style="display:none">
+            <input id="cat_@item.id_kategorii" class="click_input" type="text"/>
+            <i class="fas fa-check" onclick="editCat(@item.id_kategorii,1)"></i>/<i class="fas fa-times" onclick="editCat(@item.id_kategorii,0)"></i>
+        </div>
+        <i class="fas fa-trash-alt" onclick="cat_delete(@item.id_kategorii)"></i>
+        <div id="result_@item.id_kategorii"></div>
+    </li>
+}
+    <li id="cat_new_@ViewBag.Id">
+        <i id="cat_new" class="fas fa-plus-circle" onclick="showNew(@ViewBag.Id)"></i>
+        <div id="cat_new" class="click_input_div" style="display:none">
+            <input class="click_input" type="text" />
+            <i class="fas fa-check" onclick="addCat(@ViewBag.Id,1)"></i>/<i class="fas fa-times" onclick="addCat(@ViewBag.Id,0)"></i>
+        </div>
+    </li>
+</ul>

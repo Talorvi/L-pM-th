@@ -1,0 +1,59 @@
+﻿    <div class="curtain">
+    </div>
+    <div class="popUp">
+    </div>
+    <div class="element">
+        <table class="table table-striped">
+            <tr>
+                <th scope="col"><label>Author:</label></th>
+                <th scope="col"><input type="text" name="author" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Title:</label></th>
+                <th scope="col"><input type="text" name="title" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Creator:</label></th>
+                <th scope="col"><input type="text" name="creator" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Subject:</label></th>
+                <th scope="col"><input type="text" name="subject" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Keywords:</label></th>
+                <th scope="col"><input type="text" name="keywords" /></th>
+            </tr>
+            <tr>
+                <th scope="col"><label>Categories:</label></th>
+                <th scope="col"><input type="text" id="categories" /></th>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript">
+      $(".popUp").hide();
+      $(".curtain").hide();
+      $("#categories").click(function () {
+          $(".curtain").show();
+          $(".popUp").show("slow");
+      });
+
+      $(".curtain").click(function () {
+          $(".curtain").hide();
+          $(".popUp").hide("fast");
+
+          var checked_ids = [];
+          var checked_categories = [];
+          $.each($("input[name='Check_Cat']:checked"), function () {
+              checked_ids.push($(this).val());
+              checked_categories.push($(this).parent().find(".category").text());
+          });
+          $("#categories").val(checked_categories);
+
+      });
+
+      $("#categories").keypress(function (e) {
+          e.preventDefault();
+      });
+    </script>
+

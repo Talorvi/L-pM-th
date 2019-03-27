@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="loopmothModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Autorzy">
+    <Key>
+      <PropertyRef Name="id_autora" />
+    </Key>
+    <Property Name="id_autora" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="imie" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Kategorie">
+    <Key>
+      <PropertyRef Name="id_kategorii" />
+    </Key>
+    <Property Name="nazwa" Type="nvarchar(max)" />
+    <Property Name="id_kategorii" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dziedzina" Type="int" />
+  </EntityType>
+  <EntityType Name="Prace">
+    <Key>
+      <PropertyRef Name="id_pracy" />
+    </Key>
+    <Property Name="id_pracy" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="tytul" Type="nvarchar(max)" />
+    <Property Name="jezyk" Type="nvarchar(max)" />
+    <Property Name="rodzaj" Type="nvarchar(max)" />
+    <Property Name="rok_publikacji" Type="int" />
+    <Property Name="slowa_kluczowe" Type="nvarchar(max)" />
+    <Property Name="id_wydawcy" Type="int" />
+  </EntityType>
+  <EntityType Name="Prace-Autorzy">
+    <Key>
+      <PropertyRef Name="id_pracy" />
+      <PropertyRef Name="id_autora" />
+    </Key>
+    <Property Name="id_pracy" Type="int" Nullable="false" />
+    <Property Name="id_autora" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Prace-Kategorie">
+    <Key>
+      <PropertyRef Name="id_pracy" />
+      <PropertyRef Name="id_kategorii" />
+    </Key>
+    <Property Name="id_pracy" Type="int" Nullable="false" />
+    <Property Name="id_kategorii" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Wydawcy">
+    <Key>
+      <PropertyRef Name="id_wydawcy" />
+    </Key>
+    <Property Name="nazwa" Type="nvarchar(max)" />
+    <Property Name="id_wydawcy" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Kategorie__dzied__3E52440B">
+    <End Role="Kategorie" Type="Self.Kategorie" Multiplicity="0..1" />
+    <End Role="Kategorie1" Type="Self.Kategorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategorie">
+        <PropertyRef Name="id_kategorii" />
+      </Principal>
+      <Dependent Role="Kategorie1">
+        <PropertyRef Name="dziedzina" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Prace__id_wydawc__3B75D760">
+    <End Role="Wydawcy" Type="Self.Wydawcy" Multiplicity="0..1" />
+    <End Role="Prace" Type="Self.Prace" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Wydawcy">
+        <PropertyRef Name="id_wydawcy" />
+      </Principal>
+      <Dependent Role="Prace">
+        <PropertyRef Name="id_wydawcy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Prace-Aut__id_au__4222D4EF">
+    <End Role="Autorzy" Type="Self.Autorzy" Multiplicity="1" />
+    <End Role="Prace-Autorzy" Type="Self.Prace-Autorzy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Autorzy">
+        <PropertyRef Name="id_autora" />
+      </Principal>
+      <Dependent Role="Prace-Autorzy">
+        <PropertyRef Name="id_autora" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Prace-Aut__id_pr__412EB0B6">
+    <End Role="Prace" Type="Self.Prace" Multiplicity="1" />
+    <End Role="Prace-Autorzy" Type="Self.Prace-Autorzy" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Prace">
+        <PropertyRef Name="id_pracy" />
+      </Principal>
+      <Dependent Role="Prace-Autorzy">
+        <PropertyRef Name="id_pracy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Prace-Kat__id_ka__45F365D3">
+    <End Role="Kategorie" Type="Self.Kategorie" Multiplicity="1" />
+    <End Role="Prace-Kategorie" Type="Self.Prace-Kategorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Kategorie">
+        <PropertyRef Name="id_kategorii" />
+      </Principal>
+      <Dependent Role="Prace-Kategorie">
+        <PropertyRef Name="id_kategorii" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Prace-Kat__id_pr__44FF419A">
+    <End Role="Prace" Type="Self.Prace" Multiplicity="1" />
+    <End Role="Prace-Kategorie" Type="Self.Prace-Kategorie" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Prace">
+        <PropertyRef Name="id_pracy" />
+      </Principal>
+      <Dependent Role="Prace-Kategorie">
+        <PropertyRef Name="id_pracy" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="loopmothModelStoreContainer">
+    <EntitySet Name="Autorzy" EntityType="Self.Autorzy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Kategorie" EntityType="Self.Kategorie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Prace" EntityType="Self.Prace" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Prace-Autorzy" EntityType="Self.Prace-Autorzy" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Prace-Kategorie" EntityType="Self.Prace-Kategorie" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Wydawcy" EntityType="Self.Wydawcy" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Kategorie__dzied__3E52440B" Association="Self.FK__Kategorie__dzied__3E52440B">
+      <End Role="Kategorie" EntitySet="Kategorie" />
+      <End Role="Kategorie1" EntitySet="Kategorie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Prace__id_wydawc__3B75D760" Association="Self.FK__Prace__id_wydawc__3B75D760">
+      <End Role="Wydawcy" EntitySet="Wydawcy" />
+      <End Role="Prace" EntitySet="Prace" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Prace-Aut__id_au__4222D4EF" Association="Self.FK__Prace-Aut__id_au__4222D4EF">
+      <End Role="Autorzy" EntitySet="Autorzy" />
+      <End Role="Prace-Autorzy" EntitySet="Prace-Autorzy" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Prace-Aut__id_pr__412EB0B6" Association="Self.FK__Prace-Aut__id_pr__412EB0B6">
+      <End Role="Prace" EntitySet="Prace" />
+      <End Role="Prace-Autorzy" EntitySet="Prace-Autorzy" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Prace-Kat__id_ka__45F365D3" Association="Self.FK__Prace-Kat__id_ka__45F365D3">
+      <End Role="Kategorie" EntitySet="Kategorie" />
+      <End Role="Prace-Kategorie" EntitySet="Prace-Kategorie" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Prace-Kat__id_pr__44FF419A" Association="Self.FK__Prace-Kat__id_pr__44FF419A">
+      <End Role="Prace" EntitySet="Prace" />
+      <End Role="Prace-Kategorie" EntitySet="Prace-Kategorie" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

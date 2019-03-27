@@ -1,0 +1,19 @@
+﻿
+<div class="container" id="content">
+    <div class="element">
+            @using (Html.BeginForm("Upload", "Merge", FormMethod.Post, new { id = "file_upload", enctype = "multipart/form-data" }))
+            {
+                <label class="btn btn-dark">
+                    Przeglądaj...
+                    <input type="file" name="file" style="display: none;" accept=".pdf" />
+                </label>
+            }
+    </div>
+</div>
+    <script>
+        $(document).on('change', ':file', function () {
+            $('#file_upload').submit();
+        });
+    </script>
+
+

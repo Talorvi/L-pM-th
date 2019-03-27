@@ -1,0 +1,152 @@
+﻿@model IEnumerable<LoopMoth.Models.MergeViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" id="content">
+    <div class="curtain">
+    </div>
+    <div class="popUp">
+        Podaj nazwę pliku:
+        <input type="text" id="filename" />
+        <a href="#"><i class="fas fa-download"></i></a>
+        <br />
+        (Opcje): 
+        {0} = Autor(zy), 
+        {1} = Tytuł, 
+        {2} = Rok publikacji, 
+        {3} = Wydawca, 
+        {4} = Język<br />
+    </div>
+    </div>
+<div style="margin:1vw;max-width:98vw;">
+    <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.tytul)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.autorzy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.jezyk)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.rodzaj)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.rok_publikacji)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.slowa_kluczowe)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.wydawca)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.kategorie)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="@item.id_pracy">
+                    <td>
+                        <a href="@Url.Action("Edit",new { id=item.id_pracy })" aria-label="Edycja"><i class="fas fa-file-alt" aria-hidden="true" title="Edycja"></i></a>
+                        <a href="#" onclick="praca_delete(@item.id_pracy)" aria-label="Usuń"><i class="fas fa-trash-alt" aria-hidden="true" title="Usuń"></i></a>
+                        <a href="#" onclick="praca_download(@item.id_pracy)" aria-label="Pobierz"><i class="fas fa-download" aria-hidden="true" title="Pobierz"></i></a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.tytul)
+                    </td>
+                    <td>
+                        @foreach (var author in item.autorzy)
+                        {
+                            if (author != item.autorzy.First())
+                            {
+                                <br />
+                            }
+                            @Html.DisplayFor(das => author.imie)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.jezyk)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rodzaj)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.rok_publikacji)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.slowa_kluczowe)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.wydawca.nazwa)
+                    </td>
+                    <td>
+                        @foreach (var cat in item.kategorie)
+                        {
+                            if (cat != item.kategorie.First())
+                            {
+                                <br />
+                            }
+                            @Html.DisplayFor(das => cat.nazwa)
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(".popUp").hide();
+    $(".curtain").hide();
+    function praca_delete(id) {
+        $.ajax({
+            method: 'POST',
+            url: '@Url.Action("Delete")',
+            data: {'id':id },
+            success: function(res){
+                if(res['result']==true){
+                    $('#'+id).remove();
+                }else alert('Nie udało się usunąć.');
+            }
+        });
+    }
+    function praca_download(id) {
+        $('#example').hide();
+        $('#example_length').hide();
+        $('#example_filter').hide();
+        $('#example_paginate').hide();
+        $(".curtain").show();
+        $(".popUp").show("slow");
+        var a = $('.popUp').find('a');
+        a.attr('href', '@Url.Action("Download")?id=' + id);
+        $("#filename").change(function(a){
+            var filename = $("#filename").val();
+            $('.popUp').find('a').attr('href', '@Url.Action("Download")?id=' + id + '&filename=' + filename);
+        });
+    }
+    $(".curtain").click(function () {
+        $('#example').show();
+        $('#example_length').show();
+        $('#example_filter').show();
+        $('#example_paginate').show();
+        $(".curtain").hide();
+        $(".popUp").hide("fast");
+        $("#filename").val('');
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#example').DataTable({
+            'dom': 'Rlfrtip'
+        });
+    });
+</script>
